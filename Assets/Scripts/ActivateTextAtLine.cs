@@ -38,8 +38,9 @@ public class ActivateTextAtLine : MonoBehaviour {
         
     }
 
-    void OnTriggerEnter2d(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
+        
         if(other.name == "Player")
         {
             if (_requireButtonPress)
@@ -47,8 +48,9 @@ public class ActivateTextAtLine : MonoBehaviour {
                 _waitForPress = true;
                 return;
             }
-            _textBoxManager.EnableTextBox();
             SetScriptToController();
+            _textBoxManager.EnableTextBox();
+            
         }
     }
 
@@ -58,6 +60,7 @@ public class ActivateTextAtLine : MonoBehaviour {
         {
             _waitForPress = false;
         }
+        _textBoxManager.DisableTextBox();
     }
 
 

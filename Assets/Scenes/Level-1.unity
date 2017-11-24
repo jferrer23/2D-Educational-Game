@@ -1389,7 +1389,7 @@ MonoBehaviour:
   _answers: []
   _currentLine: 0
   _endLine: 0
-  isActive: 1
+  isActive: 0
   freezePlayer: 0
   player: {fileID: 0}
 --- !u!1 &1996813573
