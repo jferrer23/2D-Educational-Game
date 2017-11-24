@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class TextBoxManager : MonoBehaviour {
+public class TextBoxManager : MonoBehaviour
+{
 
     public GameObject _textBox;
 
@@ -20,27 +21,44 @@ public class TextBoxManager : MonoBehaviour {
     public int _currentLine;
     public int _endLine;
 
+    public bool isActive;
+    public bool freezePlayer;
+
     public SimpleController player;
 
-	// Use this for initialization
-	void Start () {
+
+
+    // Use this for initialization
+    void Start()
+    { 
+
         player = FindObjectOfType<SimpleController>();
 
-        if(_textFile != null)
-        {
-            _textLines = (_textFile.text.Split('\n'));
-            parseAnswers();
-        }
 
-        if(_endLine == 0)
+        ReloadScript(_textFile);
+
+
+        if (isActive)
         {
-            _endLine = _questions.Length - 1;
+            EnableTextBox();
         }
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        else
+        {
+            DisableTextBox();
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            EnableTextBox();
+        }
+        if (!isActive)
+        {
+            return;
+        }
 
         _questionField.text = _questions[_currentLine];
 
@@ -52,30 +70,27 @@ public class TextBoxManager : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            _textBox.SetActive(false);
+            DisableTextBox();
         }
 
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            _textBox.SetActive(true);
-        }
+        
 
         if (_currentLine > _endLine)
         {
             _currentLine = 0;
         }
-	}
+    }
 
     void parseAnswers()
     {
         int i = 0;
         int k = 0;
-        _questions  = new string[_textLines.Length / 2];
-        _answers    = new string[_textLines.Length / 2];
+        _questions = new string[_textLines.Length / 2];
+        _answers = new string[_textLines.Length / 2];
         while (i < _textLines.Length - 1)
-        {   
+        {
             _questions[k] = _textLines[i].Trim();
-            
+
             i++;
             _answers[k] = _textLines[i].Trim();
 
@@ -85,9 +100,9 @@ public class TextBoxManager : MonoBehaviour {
 
     }
 
-    public void checkAnswe()
+    public void checkAnswer()
     {
-        
+
         string UserInput = _input.text.Trim();
 
         if (UserInput.Equals(_answers[_currentLine]))
@@ -97,6 +112,40 @@ public class TextBoxManager : MonoBehaviour {
         else
         {
             _answerField.text = "Sorry, that's Wrong. You Entered '" + UserInput + "' but the answer is: '" + _answers[_currentLine] + "'";
+        }
+    }
+
+    public void EnableTextBox()
+    {
+        _textBox.SetActive(true);
+        isActive = true;
+
+        if (freezePlayer)
+        {
+            player.frozen = true;
+        }
+    }
+    public void DisableTextBox()
+    {
+        _textBox.SetActive(false);
+
+        isActive = false;
+
+        player.frozen = false;
+    }
+
+    public void ReloadScript(TextAsset textFile)
+    {
+        if (textFile != null)
+        {
+            _textLines = new string[1];
+            _textLines = textFile.text.Split('\n');
+            parseAnswers();
+        }
+
+        if (_endLine == 0)
+        {
+            _endLine = _questions.Length - 1;
         }
     }
 }

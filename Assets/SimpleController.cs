@@ -16,7 +16,8 @@ public class SimpleController : MonoBehaviour
 
     private Transform groundCheck;          // A position marking where to check if the player is grounded.
     private bool grounded = false;          // Whether or not the player is grounded.
-   
+
+    public bool frozen;
 
     void Awake()
     {
@@ -28,6 +29,10 @@ public class SimpleController : MonoBehaviour
 
     void Update()
     {
+        if (frozen)
+        {
+            return;
+        }
         // The player is grounded if a linecast to the groundcheck position hits anything on the ground layer.
         //grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
 
@@ -39,6 +44,10 @@ public class SimpleController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (frozen)
+        {
+            return;
+        }
         // Cache the horizontal input.
         float h = Input.GetAxis("Horizontal");
 
