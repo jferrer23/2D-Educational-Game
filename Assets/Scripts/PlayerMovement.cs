@@ -50,9 +50,9 @@ public class PlayerMovement : MonoBehaviour
 			Application.Quit();
 		}
 
-		// get the input this frame
-		float vertical = Input.GetAxis("Vertical");
-		float horizontal = Input.GetAxis("Horizontal");
+        // get the input this frame
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
 
 		// if there is no input then stop the animation
 		if((vertical == 0.0f)&&(horizontal == 0.0f))
@@ -66,29 +66,34 @@ public class PlayerMovement : MonoBehaviour
 		// horizontal movement, left or right, set animation type and speed 
 		if (horizontal > 0)
 		{
-			GetComponent<Rigidbody2D>().velocity = new Vector2(movementSpeed * Time.deltaTime, 0);
+            GetComponent<Rigidbody2D>().AddForce(transform.right * movementSpeed * .75f);
+
+            //GetComponent<Rigidbody2D>().velocity = new Vector2(movementSpeed * Time.deltaTime, GetComponent<Rigidbody2D>().velocity.y);
 			animator.SetInteger("Direction", 1);
 			animator.speed = 0.5f;
 		}
 		else if (horizontal < 0)
 		{
-			GetComponent<Rigidbody2D>().velocity =	new Vector2(-movementSpeed * Time.deltaTime, 0);
-			animator.SetInteger("Direction", 3);
+            GetComponent<Rigidbody2D>().AddForce(-transform.right * movementSpeed * .75f);
+            //GetComponent<Rigidbody2D>().velocity =	new Vector2(-movementSpeed * Time.deltaTime, GetComponent<Rigidbody2D>().velocity.y);
+            animator.SetInteger("Direction", 3);
 			animator.speed = 0.5f;
 		}
-
+        /**/
 		// vertical movement, up or down, set animation type and speed 
 		if (vertical > 0)
 		{
-			//transform.Translate(0, movementSpeed * 0.9f * Time.deltaTime, 0);
-			GetComponent<Rigidbody2D>().velocity =	new Vector2(GetComponent<Rigidbody2D>().velocity.x, movementSpeed * Time.deltaTime);
+            //transform.Translate(0, movementSpeed * 0.9f * Time.deltaTime, 0);
+            GetComponent<Rigidbody2D>().AddForce(transform.up * movementSpeed * .5f);
+            //GetComponent<Rigidbody2D>().velocity =	new Vector2(GetComponent<Rigidbody2D>().velocity.x, movementSpeed * Time.deltaTime);
 			animator.SetInteger("Direction", 0);
 			animator.speed = 0.35f;
 		}
 		else if (vertical < 0)
 		{
-			//transform.Translate(0, -movementSpeed *  0.9f * Time.deltaTime, 0);
-			GetComponent<Rigidbody2D>().velocity =	new Vector2(GetComponent<Rigidbody2D>().velocity.x, -movementSpeed * Time.deltaTime);
+            //transform.Translate(0, -movementSpeed *  0.9f * Time.deltaTime, 0);
+            GetComponent<Rigidbody2D>().AddForce(-transform.up * movementSpeed * .5f);
+            //GetComponent<Rigidbody2D>().velocity =	new Vector2(GetComponent<Rigidbody2D>().velocity.x, -movementSpeed * Time.deltaTime);
 			animator.SetInteger("Direction", 2);
 			animator.speed = 0.35f;
 		}
